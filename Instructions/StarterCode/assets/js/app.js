@@ -62,4 +62,51 @@ var chartGroup = svg.append("g")
   .attr("opacity",".75")
   .attr("stroke","black");
 
+  circlesGroup.append("text")
+  .text(function(data){
+    return data.abbr; 
+  })
+  .attr("dx", d => xLinearScale(d.poverty))
+   .attr("dy", d => yLinearScale(d.healthcare)+10/2.5)
+   .attr("font-size","9")
+   .attr("class","stateText")
+
+   circlesGroup.call(toolTip);
+
+   circlesGroup.on("mouseover", function(data) {
+     toolTip.show(data, this);
+   })
+     
+   .on("mouseout", function(data, index) {
+       toolTip.hide(data);
+     });
+        });
+
+  var toolTip = d3.tip()
+  .attr("class","d3-tip")
+  .offset([0,0])
+  .html(function(d){
+    return(`${d.state}<br>Poverty(%):${d.poverty}<br>Insufficient Care(%):${d.healthcare}`);
+  });
   
+
+   chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - chartMargin.left + 40)
+    .attr("x", 0 - (chartHeight / 2))
+    .attr("dy", "1em")
+    .attr("class", "aText")
+    .text("Insufficient Care (%)");
+
+   chartGroup.append("text")
+    .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + chartMargin.top + 30})`)
+    .attr("class", "aText")
+    .text("Poverty(%)")
+    .catch(function(error) {
+      console.log(error);
+    });
+}
+
+makeResponsive();
+
+d3.select(window).on("resize", makeResponsive);
