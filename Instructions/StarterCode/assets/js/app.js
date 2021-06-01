@@ -46,4 +46,20 @@ var chartGroup = svg.append("g")
   var bottomAxis = d3.axisBottom(xLinearScale);
   var leftAxis = d3.axisLeft(yLinearScale);
 
+  chartGroup.append("g")
+  .attr("transform", `translate(0, ${chartHeight})`)
+  .call(bottomAxis);
+
+  chartGroup.append("g")
+    .call(leftAxis);
+
+  var circlesGroup= chartGroup.selectAll("circle").data(stateData).enter();
+  circlesGroup.append("circle")
+  .attr("cx", d => xLinearScale(d.poverty))
+  .attr("cy", d => yLinearScale(d.healthcare))
+  .attr("r","10")
+  .attr("fill","lightblue")
+  .attr("opacity",".75")
+  .attr("stroke","black");
+
   
