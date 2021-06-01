@@ -29,3 +29,21 @@ var chartGroup = svg.append("g")
 
   d3.csv("../assets/data/data.csv").then(function(stateData) {
 
+    console.log(stateData);
+    
+  stateData.forEach(function(data) {
+    data.poverty = +data.poverty;
+    data.healthcare =+data.healthcare;
+  });
+  var xLinearScale = d3.scaleLinear()
+  .domain([d3.min(stateData, d => d.poverty)-1, d3.max(stateData, d => d.poverty)+1])
+  .range([0,chartWidth]);
+
+  var yLinearScale = d3.scaleLinear()
+  .domain([d3.min(stateData, d => d.healthcare)-2, d3.max(stateData, d => d.healthcare)+2])
+  .range([chartHeight,0]);
+
+  var bottomAxis = d3.axisBottom(xLinearScale);
+  var leftAxis = d3.axisLeft(yLinearScale);
+
+  
